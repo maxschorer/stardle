@@ -30,69 +30,60 @@ const GameBoard: React.FC = () => {
     );
   };
 
-  const getBackgroundColor = (attr: typeof attributes[0], guess: Guess) => {
-    const comparison = guess.comparison.find(c => c.attribute === attr.key);
-    if (!comparison) return 'bg-gray-700';
 
-    switch (comparison.match) {
-      case 'exact': return 'bg-green-600';
-      case 'close': return 'bg-yellow-500';
-      default: return 'bg-gray-700';
-    }
+  const renderGuess = (guess: Guess, index: number) => {
+    return (
+      /* Update key so index not needed */
+      <div key={index} className="guess-container mb-4 bg-gray-800 rounded-lg overflow-hidden">
+        {/* Add a header with player image and name */}
+        <div className="guess-header p-3 bg-gray-700 flex items-center">
+          {/* Player image */}
+          {guess.player.imageUrl && (
+            <div className="player-image mr-3">
+              <img
+                src={guess.player.imageUrl}
+                alt={guess.player.name}
+                className="w-10 h-10 rounded-full object-cover border-2 border-gray-600"
+              />
+            </div>
+          )}
+
+          {/* Player name */}
+          <h3 className="text-lg font-medium">
+            Guess #{index + 1}: {guess.player.name}
+          </h3>
+        </div>
+
+        {/* Attributes grid - your existing code */}
+        <div className="attributes-grid p-3">
+          <div className="grid grid-cols-3 gap-3 mb-3">
+            {firstRow.map(attr => (
+              <div key={attr.key} className="attribute-card bg-gray-700 p-3 rounded-lg">
+                <div className="attribute-label text-sm text-gray-400 mb-1">{attr.name}</div>
+                {renderValue(attr, guess)}
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            {secondRow.map(attr => (
+              <div key={attr.key} className="attribute-card bg-gray-700 p-3 rounded-lg">
+                <div className="attribute-label text-sm text-gray-400 mb-1">{attr.name}</div>
+                {renderValue(attr, guess)}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   };
 
-  const renderGuessCard = (guess: Guess) => (
-    <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
-      <div className="text-lg font-semibold text-left mb-4">
-        {guess.player.name}
-      </div>
-      
-      {/* First Row */}
-      <div className="grid grid-cols-3 gap-4 mb-4">
-        {firstRow.map(attr => (
-          <div 
-            key={attr.key} 
-            className={`${getBackgroundColor(attr, guess)} rounded-lg p-4 transition-colors duration-300`}
-          >
-            <div className="text-gray-200 text-sm mb-2 text-center">{attr.name}</div>
-            <div className="text-xl font-bold text-center">
-              {renderValue(attr, guess)}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Second Row */}
-      <div className="grid grid-cols-3 gap-4">
-        {secondRow.map(attr => (
-          <div 
-            key={attr.key} 
-            className={`${getBackgroundColor(attr, guess)} rounded-lg p-4 transition-colors duration-300`}
-          >
-            <div className="text-gray-200 text-sm mb-2 text-center">{attr.name}</div>
-            <div className="text-xl font-bold text-center">
-              {renderValue(attr, guess)}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
-    <div className="w-full max-w-2xl space-y-8">
+    <div className="game-board w-full max-w-3xl mx-auto">
+      {guesses.map((guess, index) => renderGuess(guess, index))}
       {/* Guess Counter */}
       <div className="text-center text-xl font-semibold">
         Guesses: {guesses.length} / {MAX_ATTEMPTS}
-      </div>
-
-      {/* Guesses Stack */}
-      <div className="space-y-8">
-        {guesses.slice().reverse().map((guess, index) => (
-          <div key={index} className="animate-fadeIn">
-            {renderGuessCard(guess)}
-          </div>
-        ))}
       </div>
     </div>
   );
