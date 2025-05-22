@@ -5,17 +5,15 @@ import { Search } from 'lucide-react';
 import { useGame } from '../contexts/GameContext';
 
 interface PlayerSearchProps {
-  onSelectPlayer: (player: Player) => void;
   disabled?: boolean;
   excludedPlayerIds?: string[];
 }
 
 const PlayerSearch: React.FC<PlayerSearchProps> = ({ 
-  onSelectPlayer, 
   disabled = false,
   excludedPlayerIds = []
 }) => {
-  const { allPlayers, loading } = useGame();
+  const { allPlayers, loading, handleGuess } = useGame();
   const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<Player[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -66,9 +64,11 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
     };
   }, []);
 
-  const handleSelect = (player: Player) => {
-    onSelectPlayer(player);
+  const handleSelectPlayer = (player: Player) => {
+    console.log(`PlayerSearch: handleGuess called ${player}`);
+    handleGuess(player);
     setQuery('');
+    setResults([]);
     setIsOpen(false);
     inputRef.current?.focus();
   };
@@ -106,7 +106,7 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
           {results.map(player => (
             <div
               key={player.id}
-              onClick={() => handleSelect(player)}
+              onClick={() => handleSelectPlayer(player)}
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
             >
               <span>{player.name}</span>

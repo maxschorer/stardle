@@ -63,7 +63,7 @@ export async function getRandomPlayer(): Promise<Player> {
     const { data: dailyPlayer, error: dailyPlayerError } = await supabase
       .from('daily_players')
       .select('player_id')
-      .eq('date', today)
+      .eq('ds', today)
       .single();
     
     if (dailyPlayerError) {
@@ -73,7 +73,13 @@ export async function getRandomPlayer(): Promise<Player> {
     if (!dailyPlayer) {
       throw new Error('No player assigned for today');
     }
-    
+
+    // Make sure the cache is filled before checking it
+    if (allPlayersCache.length === 0) {
+      console.log("Cache is empty, filling it first...");
+      await getAllPlayers(); // This will populate the cache
+    }
+
     // First check if we already have the players cached
     if (allPlayersCache.length > 0) {
       const cachedPlayer = allPlayersCache.find(p => p.id === dailyPlayer.player_id);

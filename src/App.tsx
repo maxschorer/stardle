@@ -31,7 +31,6 @@ function GameContent() {
       <main className="flex-1 container mx-auto px-4 py-6 flex flex-col items-center">
         <div className="w-full max-w-md mb-6">
           <PlayerSearch 
-            onSelectPlayer={handleGuess} 
             disabled={gameOver}
             excludedPlayerIds={guesses.map(g => g.player.id)}
           />
