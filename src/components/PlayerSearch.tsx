@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { searchPlayers } from '../data/players';
 import { Player } from '../types/Player';
 import { Search } from 'lucide-react';
+import { useGame } from '../contexts/GameContext';
 
 interface PlayerSearchProps {
   onSelectPlayer: (player: Player) => void;
@@ -14,6 +15,7 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
   disabled = false,
   excludedPlayerIds = []
 }) => {
+  const { allPlayers, loading } = useGame();
   const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<Player[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -70,6 +72,10 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
     setIsOpen(false);
     inputRef.current?.focus();
   };
+
+  if (loading) {
+    return <div>Loading players...</div>;
+  }
 
   return (
     <div className="relative w-full">
