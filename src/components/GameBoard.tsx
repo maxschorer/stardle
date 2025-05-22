@@ -18,14 +18,13 @@ const GameBoard: React.FC = () => {
 
     const value = comparison.value;
     const formattedValue = attr.key === 'careerPoints' ? formatNumber(value) : value;
-
     return (
       <div className="flex items-center justify-center space-x-2">
         <span>{formattedValue}</span>
         {comparison.match !== 'exact' && attr.key !== 'position' && (
           comparison.direction === 'higher' 
-            ? <ArrowDown className="text-red-500" size={16} />
-            : <ArrowUp className="text-green-500" size={16} />
+            ? <ArrowDown className="text-white" size={16} />
+            : <ArrowUp className="text-white" size={16} />
         )}
       </div>
     );
@@ -42,10 +41,10 @@ const GameBoard: React.FC = () => {
     }
   };
 
-  const renderGuessCard = (guess: Guess, index: number) => (
+  const renderGuessCard = (guess: Guess) => (
     <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
-      <div className="text-lg font-semibold text-center mb-4">
-        Guess #{guesses.length - index}: {guess.player.name}
+      <div className="text-lg font-semibold text-left mb-4">
+        {guess.player.name}
       </div>
       
       {/* First Row */}
@@ -91,7 +90,7 @@ const GameBoard: React.FC = () => {
       <div className="space-y-8">
         {guesses.slice().reverse().map((guess, index) => (
           <div key={index} className="animate-fadeIn">
-            {renderGuessCard(guess, index)}
+            {renderGuessCard(guess)}
           </div>
         ))}
       </div>
