@@ -3,14 +3,11 @@ import { ArrowUp, ArrowDown } from 'lucide-react';
 import { attributes } from '../types/Player';
 import { formatNumber } from '../utils/gameUtils';
 import { Guess } from '../types/Guess';
+import { useGame } from '../contexts/GameContext';
 
-interface GameBoardProps {
-  guesses: Guess[];
-  currentGuess: Guess | null;
-  maxAttempts?: number;
-}
+const GameBoard: React.FC = () => {
+  const { guesses, MAX_ATTEMPTS } = useGame();
 
-const GameBoard: React.FC<GameBoardProps> = ({ guesses, currentGuess, maxAttempts = 8 }) => {
   // Split attributes into two rows for the guess display
   const firstRow = attributes.slice(0, 3);
   const secondRow = attributes.slice(3);
@@ -87,7 +84,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ guesses, currentGuess, maxAttempt
     <div className="w-full max-w-2xl space-y-8">
       {/* Guess Counter */}
       <div className="text-center text-xl font-semibold">
-        Guesses: {guesses.length} / {maxAttempts}
+        Guesses: {guesses.length} / {MAX_ATTEMPTS}
       </div>
 
       {/* Guesses Stack */}

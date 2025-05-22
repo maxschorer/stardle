@@ -1,71 +1,74 @@
 import React from 'react';
-import Modal from './Modal';
+import { useGame } from '../contexts/GameContext';
 
-interface HowToPlayModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+const HowToPlayModal: React.FC = () => {
+  const { showHowToPlay, setShowHowToPlay } = useGame();
 
-const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose }) => {
+  if (!showHowToPlay) return null;
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="How To Play">
-      <div className="space-y-4">
-        <p>
-          <span className="font-semibold">Stardle</span> is a daily NBA player guessing game. 
-          Try to guess the mystery NBA player in 8 attempts!
-        </p>
-        
-        <div>
-          <h3 className="text-lg font-bold mb-2">How It Works:</h3>
-          <ul className="list-disc pl-5 space-y-2">
-            <li>Type a player name and select from the dropdown</li>
-            <li>After each guess, the color of the tiles will change to show how close your guess was</li>
-            <li>You have 8 attempts to guess the player</li>
-          </ul>
-        </div>
-        
-        <div>
-          <h3 className="text-lg font-bold mb-2">Color Meanings:</h3>
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <div className="w-6 h-6 bg-green-600 rounded mr-2"></div>
-              <span>Exact match</span>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-gray-800 rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold">How to Play</h2>
+            <button 
+              onClick={() => setShowHowToPlay(false)}
+              className="text-gray-400 hover:text-white"
+              aria-label="Close"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div className="space-y-4">
+            <p>Guess the NBA player in 8 tries!</p>
+            <p>Each guess must be a valid NBA player. Hit enter to submit.</p>
+            <p>After each guess, you'll see how close your guess is to the target player.</p>
+            
+            <div className="border-t border-gray-700 pt-4">
+              <h3 className="font-bold mb-2">Examples</h3>
+              
+              {/* Example of exact match */}
+              <div className="mb-4">
+                <div className="flex items-center mb-2">
+                  <div className="w-24 font-medium">Position:</div>
+                  <div className="bg-green-600 px-2 py-1 rounded">PG</div>
+                </div>
+                <p className="text-sm text-gray-400">The player is a Point Guard.</p>
+              </div>
+              
+              {/* Example of close match */}
+              <div className="mb-4">
+                <div className="flex items-center mb-2">
+                  <div className="w-24 font-medium">Rookie Year:</div>
+                  <div className="bg-yellow-600 px-2 py-1 rounded flex items-center">
+                    2018
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    </svg>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-400">The player's rookie year is after 2018.</p>
+              </div>
+              
+              {/* Example of wrong match */}
+              <div>
+                <div className="flex items-center mb-2">
+                  <div className="w-24 font-medium">All-Stars:</div>
+                  <div className="bg-gray-700 px-2 py-1 rounded">5</div>
+                </div>
+                <p className="text-sm text-gray-400">The player has a different number of All-Star appearances.</p>
+              </div>
             </div>
-            <div className="flex items-center">
-              <div className="w-6 h-6 bg-yellow-500 rounded mr-2"></div>
-              <span>Close match (e.g., ±1 year, similar position)</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-6 h-6 bg-gray-700 rounded mr-2"></div>
-              <span>Incorrect</span>
-            </div>
+            
+            <p className="border-t border-gray-700 pt-4">A new player will be available each day!</p>
           </div>
         </div>
-        
-        <div>
-          <h3 className="text-lg font-bold mb-2">Attributes Compared:</h3>
-          <ul className="list-disc pl-5 space-y-2">
-            <li><strong>Position:</strong> The player's primary position (PG, SG, SF, PF, C)</li>
-            <li><strong>Rookie Year:</strong> The year the player entered the NBA</li>
-            <li><strong>Seasons:</strong> Total number of NBA seasons played</li>
-            <li><strong>All-Star Games:</strong> Number of All-Star game appearances</li>
-            <li><strong>Rings:</strong> Number of NBA championships won</li>
-            <li><strong>Career Points:</strong> Total career points scored</li>
-          </ul>
-        </div>
-        
-        <p className="italic">A new Stardle will be available each day!</p>
       </div>
-      
-      <div className="mt-6">
-        <button
-          onClick={onClose}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Let's Play!
-        </button>
-      </div>
-    </Modal>
+    </div>
   );
 };
 

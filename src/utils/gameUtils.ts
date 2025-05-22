@@ -3,7 +3,16 @@ import { AttributeComparison, Match } from '../types/Guess';
 
 export function compareAttributes(guessedPlayer: Player, targetPlayer: Player): AttributeComparison[] {
   const result: AttributeComparison[] = [];
-  
+
+  console.log("Comparing attributes:", {
+    guessedAllStarGames: guessedPlayer.allStarGames,
+    targetAllStarGames: targetPlayer.allStarGames,
+    guessedRings: guessedPlayer.rings,
+    targetRings: targetPlayer.rings,
+    guessedCareerPoints: guessedPlayer.careerPoints,
+    targetCareerPoints: targetPlayer.careerPoints
+  });
+
   // Position comparison
   const positionMatch = comparePosition(guessedPlayer.position, targetPlayer.position);
   result.push({

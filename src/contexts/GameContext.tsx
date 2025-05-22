@@ -84,7 +84,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           }
         }
         
-        // Show how to play modal for first-time users
+        // Show how to play modal ONLY for first-time users
         const hasPlayed = localStorage.getItem('stardleHasPlayed');
         if (!hasPlayed) {
           setShowHowToPlay(true);
