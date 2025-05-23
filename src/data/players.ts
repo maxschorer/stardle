@@ -19,6 +19,17 @@ function mapDbPlayerToPlayer(dbPlayer: any): Player {
   };
 }
 
+export function getPSTDate(): string {
+  const pstDate = new Date().toLocaleDateString('en-US', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).split('/');
+  
+  return `${pstDate[2]}-${pstDate[0]}-${pstDate[1]}`; // Convert MM/DD/YYYY to YYYY-MM-DD
+}
+
 // Function to get all eligible players
 export async function getAllPlayers(): Promise<Player[]> {
   // Return cached players if available
@@ -56,7 +67,7 @@ export async function getAllPlayers(): Promise<Player[]> {
 
 // Function to get today's player
 export async function getRandomPlayer(): Promise<Player> {
-  const today = new Date().toISOString().split('T')[0];
+  const today = getPSTDate()
   
   try {
     // Get today's player from daily_players

@@ -13,7 +13,7 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
   disabled = false,
   excludedPlayerIds = []
 }) => {
-  const { allPlayers, loading, handleGuess } = useGame();
+  const { loading, handleGuess } = useGame();
   const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<Player[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -41,7 +41,7 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
         setResults([]);
         setIsOpen(false);
       }
-    }, 300);
+    }, 100);
 
     return () => clearTimeout(searchTimeout);
   }, [query, excludedPlayerIds]);
@@ -65,7 +65,6 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
   }, []);
 
   const handleSelectPlayer = (player: Player) => {
-    console.log(`PlayerSearch: handleGuess called ${player}`);
     handleGuess(player);
     setQuery('');
     setResults([]);

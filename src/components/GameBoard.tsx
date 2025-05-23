@@ -84,12 +84,12 @@ const GameBoard: React.FC = () => {
         </div>
         
         <div className="attributes-grid p-3">
-          <div className="grid grid-cols-3 gap-3 mb-3">
+          <div className="grid grid-cols-3 gap-3 mb-3 reveal-row">
             {firstRow.map((attr, idx) => {
               return (
                 <div 
                   key={attr.key} 
-                  className={`attribute-card ${getMatchClass(attr.key, guess)} p-3 rounded-lg ${isAnimating ? `flip-card delay-${idx + 1}` : ''}`}
+                  className={`attribute-card ${getMatchClass(attr.key, guess)} p-3 rounded-lg`}
                 >
                   <div className="attribute-label text-center text-base text-white mb-1">{attr.name}</div>
                   {renderValue(attr, guess)}
@@ -100,7 +100,7 @@ const GameBoard: React.FC = () => {
 
           <div className="grid grid-cols-3 gap-3 reveal-row">
             {secondRow.map((attr, idx) => (
-              <div key={attr.key} className={`attribute-card ${getMatchClass(attr.key, guess)} p-3 rounded-lg ${isAnimating ? `flip-card delay-${idx + 4}` : ''}`}>
+              <div key={attr.key} className={`attribute-card ${getMatchClass(attr.key, guess)} p-3 rounded-lg`}>
                 <div className="attribute-label text-center text-base text-white mb-1">{attr.name}</div>
                 {renderValue(attr, guess)}
               </div>
@@ -113,7 +113,11 @@ const GameBoard: React.FC = () => {
 
   return (
     <div className="game-board w-full max-w-3xl mx-auto">
-      {guesses.map((guess, index) => renderGuess(guess, index))}
+      {[...guesses].reverse().map((guess, index) => {
+        const originalIndex = guesses.length - 1 - index;
+        
+        return renderGuess(guess, originalIndex);
+      })}
       <div className="text-center text-xl font-semibold">
         Guesses: {guesses.length} / {MAX_ATTEMPTS}
       </div>
