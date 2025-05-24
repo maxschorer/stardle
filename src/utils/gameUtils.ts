@@ -145,5 +145,15 @@ function comparePosition(guessedPosition: string, targetPosition: string): Match
 }
 
 export function formatNumber(num: number): string {
-  return new Intl.NumberFormat().format(num);
+  if (num < 1000){
+    return num.toString();
+  }
+  const thousands = (num / 1000).toFixed(1);
+  
+  // Remove trailing .0 if present
+  const formatted = thousands.endsWith('.0') 
+    ? thousands.slice(0, -2) 
+    : thousands;
+    
+  return `${formatted}K`;
 }

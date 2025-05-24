@@ -13,11 +13,11 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
   disabled = false,
   excludedPlayerIds = []
 }) => {
-  const { loading, handleGuess } = useGame();
+  const { loading, handleGuess, guesses } = useGame();
   const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<Player[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [_, setIsLoading] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -76,25 +76,28 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
     return <div>Loading players...</div>;
   }
 
+  const guessCount = guesses.length;
+
   return (
     <div className="relative w-full">
-      <div className="relative">
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder="Search for an NBA player..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => results.length > 0 && setIsOpen(true)}
-          disabled={disabled}
-          className="w-full px-4 py-3 pl-10 bg-white text-gray-900 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
-        {isLoading && (
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent"></div>
-          </div>
-        )}
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex-grow relative">
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search for an NBA player..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => results.length > 0 && setIsOpen(true)}
+            disabled={disabled || guessCount >= 8}
+            className="w-full px-4 py-3 pl-10 bg-white text-gray-900 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+        </div>
+        
+        <div className="ml-4 text-lg font-bold">
+          Guesses: {guessCount}/8
+        </div>
       </div>
       
       {isOpen && (

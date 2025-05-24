@@ -24,10 +24,10 @@ export const positionGroups = {
 };
 
 export const attributes = [
-  { name: 'Position', key: 'position' },
-  { name: 'Rookie Year', key: 'rookieYear' },
-  { name: 'Seasons', key: 'seasons' },
-  { name: 'All-Star Games', key: 'allStarGames' },
-  { name: 'Rings', key: 'rings' },
-  { name: 'Career Points', key: 'careerPoints' }
+  { name: 'Position', key: 'position', shortName: 'P' },
+  { name: 'Rookie Year', key: 'rookieYear', shortName: 'RY' },
+  { name: 'Seasons', key: 'seasons', shortName: 'S' },
+  { name: 'All-Stars', key: 'allStarGames', shortName: 'ASG' },
+  // { name: 'Rings', key: 'rings' },
+  { name: 'Points', key: 'careerPoints', shortName: 'TP' }
 ];

@@ -18,7 +18,7 @@ function App() {
 function AppContent() {
   // Don't use useGame here - pass it down to child components instead
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-white text-black flex flex-col">
       <GameHeader />
       
       <main className="flex-1 container mx-auto px-4 py-6 flex flex-col items-center">

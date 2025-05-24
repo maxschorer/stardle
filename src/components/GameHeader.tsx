@@ -10,9 +10,9 @@ const GameHeader: React.FC<GameHeaderProps> = () => {
   const { setShowHowToPlay } = useGame();
   
   return (
-    <header className="bg-gray-800 p-4 shadow-md">
+    <header className="bg-black p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Stardle</h1>
+        <h1 className="text-2xl font-bold text-white">STARDLE</h1>
         <div className="flex space-x-4">
           <button 
             onClick={() => setShowHowToPlay(true)}
