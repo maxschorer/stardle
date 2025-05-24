@@ -85,7 +85,7 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search for an NBA player..."
+            placeholder="Enter next guess ..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => results.length > 0 && setIsOpen(true)}
@@ -93,10 +93,6 @@ const PlayerSearch: React.FC<PlayerSearchProps> = ({
             className="w-full px-4 py-3 pl-10 bg-white text-gray-900 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
-        </div>
-        
-        <div className="ml-4 text-lg font-bold">
-          Guesses: {guessCount}/8
         </div>
       </div>
       

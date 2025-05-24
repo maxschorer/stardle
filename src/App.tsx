@@ -22,10 +22,6 @@ function AppContent() {
       <GameHeader />
       
       <main className="flex-1 container mx-auto px-4 py-6 flex flex-col items-center">
-        <div className="w-full max-w-md mb-6">
-          <PlayerSearch />
-        </div>
-
         <GameBoard />
       </main>
       

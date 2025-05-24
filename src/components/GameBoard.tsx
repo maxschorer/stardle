@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowUp, ArrowDown } from 'lucide-react';
 import { attributes } from '../types/Player';
 import { formatNumber } from '../utils/gameUtils';
 import { Guess } from '../types/Guess';
 import { useGame } from '../contexts/GameContext';
+import PlayerSearch from '../components/PlayerSearch';
 import '../styles/animations.css';
 
 interface Comparison {
@@ -15,28 +15,32 @@ interface Comparison {
 }
 
 const getMatchClass = (attr: string, comparisons: Comparison[]) => {
-  // Special case for position
+  // Find the matching comparison for this attribute
+  const defaultClass = 'bg-gray-500';
   const comparison = comparisons.find(c => c.attribute === attr);
+  
+  // Handle case where no comparison is found
+  if (!comparison) {
+    return defaultClass;
+  }
+
+  // Special case for position
   if (attr === 'position') {
     return comparison.match === 'exact' 
       ? 'bg-green-500' 
-      : 'bg-gray-200';
+      : defaultClass
   }
 
   // For numeric comparisons
   if (comparison.match === 'exact') {
     return 'bg-green-500';
-  }
-  
-  if (comparison.direction === 'higher') {
+  } else if (comparison.direction === 'higher') {
     return 'bg-[#f97316]'; // Orange for higher than guess
-  }
-
-  if (comparison.direction === 'lower'){
+  } else {
     return 'bg-[#60a5fa]'; // Blue for lower than guess
   }
+  return defaultClass;
   
-  return 'bg-gray-200';
 };
 
 const GameBoard: React.FC = () => {
@@ -77,14 +81,14 @@ const GameBoard: React.FC = () => {
         className="guess-container mb-px bg-white"
       >
         {/* Single row grid */}
-        <div className="grid grid-cols-6 gap-1 bg-white">
+        <div className="grid grid-cols-6 gap-2 bg-white">
           {/* Picture Square */}
-          <div className={`aspect-square ${isAnimating ? 'flip-card delay-0' : ''}`}>
+          <div className={`aspect-square`}>
             {guess.player.imageUrl && (
               <img 
                 src={guess.player.imageUrl} 
                 alt={guess.player.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-[center_top]"
               />
             )}
           </div>
@@ -93,9 +97,7 @@ const GameBoard: React.FC = () => {
           {attributes.map((attr, attrIndex) => (
             <div 
               key={attr.key} 
-              className={`aspect-square flex items-center justify-center ${
-                isAnimating ? `flip-card delay-${attrIndex + 1}` : ''
-              } ${getMatchClass(attr.key, guess.comparison)}`}
+              className={`aspect-square flex items-center justify-center text-white font-bold ${getMatchClass(attr.key, guess.comparison)}`}
             >
               {renderValue(attr, guess)}
             </div>
@@ -112,9 +114,9 @@ const GameBoard: React.FC = () => {
       ...attributes.map(attr => ({ ...attr }))
     ];
     return (
-      <div className="grid grid-cols-6 gap-1 text-center text-sm">
+      <div className="grid grid-cols-6 gap-1 text-center text-xs font-bold">
         {header.map(attr => (
-          <div key={attr.key} className="p-2">
+          <div key={attr.key} className="p-2 flex items-center justify-center aspect-square">
             {attr.name}
           </div>
         ))}
@@ -123,12 +125,13 @@ const GameBoard: React.FC = () => {
   };
 
   return (
-    <div className="game-board w-full max-w-[600px] mx-auto space-y-1">
+    <div className="game-board w-full max-w-[600px] mx-auto space-y-2">
       <AttributeHeaders />
       {guesses.map((guess, index) => {
         const originalIndex = guesses.length - 1 - index;
         return renderGuess(guess, originalIndex);
       })}
+      <PlayerSearch />
     </div>
   );
 };

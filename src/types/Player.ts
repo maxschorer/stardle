@@ -27,7 +27,7 @@ export const attributes = [
   { name: 'Position', key: 'position', shortName: 'P' },
   { name: 'Rookie Year', key: 'rookieYear', shortName: 'RY' },
   { name: 'Seasons', key: 'seasons', shortName: 'S' },
-  { name: 'All-Stars', key: 'allStarGames', shortName: 'ASG' },
+  { name: 'All Stars', key: 'allStarGames', shortName: 'ASG' },
   // { name: 'Rings', key: 'rings' },
   { name: 'Points', key: 'careerPoints', shortName: 'TP' }
 ];
