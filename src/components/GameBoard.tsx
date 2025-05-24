@@ -14,21 +14,22 @@ interface Comparison {
   direction?: 'higher' | 'lower';
 }
 
+const DEFAULT_GRAY = 'bg-gray-500';
+
 const getMatchClass = (attr: string, comparisons: Comparison[]) => {
   // Find the matching comparison for this attribute
-  const defaultClass = 'bg-gray-500';
   const comparison = comparisons.find(c => c.attribute === attr);
   
   // Handle case where no comparison is found
   if (!comparison) {
-    return defaultClass;
+    return DEFAULT_GRAY;
   }
 
   // Special case for position
   if (attr === 'position') {
     return comparison.match === 'exact' 
       ? 'bg-green-500' 
-      : defaultClass
+      : DEFAULT_GRAY
   }
 
   // For numeric comparisons
@@ -39,8 +40,21 @@ const getMatchClass = (attr: string, comparisons: Comparison[]) => {
   } else {
     return 'bg-[#60a5fa]'; // Blue for lower than guess
   }
-  return defaultClass;
+  return DEFAULT_GRAY;
   
+};
+
+const EmptyRow = () => {
+  return (
+    <div className="grid grid-cols-6 gap-1">
+      {[...Array(6)].map((_, i) => (
+        <div 
+          key={i} 
+          className="aspect-square bg-gray-200"
+        />
+      ))}
+    </div>
+  );
 };
 
 const GameBoard: React.FC = () => {
@@ -97,7 +111,7 @@ const GameBoard: React.FC = () => {
           {attributes.map((attr, attrIndex) => (
             <div 
               key={attr.key} 
-              className={`aspect-square flex items-center justify-center text-white font-bold ${getMatchClass(attr.key, guess.comparison)}`}
+              className={`aspect-square flex items-center justify-center text-white font-bold lg:text-xl ${getMatchClass(attr.key, guess.comparison)}`}
             >
               {renderValue(attr, guess)}
             </div>
@@ -114,9 +128,9 @@ const GameBoard: React.FC = () => {
       ...attributes.map(attr => ({ ...attr }))
     ];
     return (
-      <div className="grid grid-cols-6 gap-1 text-center text-xs font-bold">
+      <div className="grid grid-cols-6 text-center text-xs lg:text-sm font-bold">
         {header.map(attr => (
-          <div key={attr.key} className="p-2 flex items-center justify-center aspect-square">
+          <div key={attr.key} className="p-2 flex items-center justify-center">
             {attr.name}
           </div>
         ))}
@@ -131,6 +145,9 @@ const GameBoard: React.FC = () => {
         const originalIndex = guesses.length - 1 - index;
         return renderGuess(guess, originalIndex);
       })}
+      {[...Array(8 - guesses.length)].map((_, index) => (
+        <EmptyRow key={`empty-${index}`} />
+      ))}
       <PlayerSearch />
     </div>
   );
