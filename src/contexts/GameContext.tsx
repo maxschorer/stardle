@@ -120,11 +120,6 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return;
     }
     
-    // Check if player has already been guessed
-    if (guesses.some(guess => guess.player.id === player.id)) {
-      return;
-    }
-    
     // Compare the guessed player with the target player
     const comparison = compareAttributes(player, targetPlayer!);
     
