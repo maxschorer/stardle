@@ -94,7 +94,7 @@ const GuessRow = ({ guess } : { guess: Guess }) => {
           <div className={`flip-card delay-${ind+1}`}>
             <div className={`${EMPTY_CLASS} flip-back`} />
             <div 
-              className={`aspect-square flex items-center justify-center text-white font-bold 
+              className={`aspect-square flex items-center justify-center text-white font-bold text-base md:text-2xl
                 flip-front
                 ${getMatchClass(attr.key, guess?.comparison || [])}
               `}
