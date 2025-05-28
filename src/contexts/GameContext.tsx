@@ -84,7 +84,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           }
         }
         
-        // Show how to play modal ONLY for first-time users
+        // Show how to play modal for first-time users
         const hasPlayed = localStorage.getItem('stardleHasPlayed');
         if (!hasPlayed) {
           setShowHowToPlay(true);
@@ -136,7 +136,9 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (player.id === targetPlayer?.id) {
       setGameWon(true);
       setGameOver(true);
-      setShowGameOver(true);
+      setTimeout(() => {
+        setShowGameOver(true);
+      }, 3400); // 3 seconds delay
     } else if (updatedGuesses.length >= MAX_ATTEMPTS) {
       setGameOver(true);
       setShowGameOver(true);

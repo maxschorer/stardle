@@ -1,7 +1,7 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useGame } from '../contexts/GameContext';
 
-const GameOverModal: React.FC = () => {
+const GameOverModal = () => {
   const { 
     showGameOver, 
     setShowGameOver, 
@@ -12,6 +12,14 @@ const GameOverModal: React.FC = () => {
   } = useGame();
 
   if (!showGameOver) return null;
+  useEffect(() => {
+    // Play victory sound when modal opens with a win
+    if (gameWon) {
+      const audio = new Audio('/sounds/victory.mp3');
+      audio.play();
+    }
+
+  }, [gameWon]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
