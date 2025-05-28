@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from 'react';
-
 import { useGame } from '../contexts/GameContext';
 import { attributes } from '../types/Player';
 import BoardRow from './BoardRow';
-
-// import '../styles/animations.css';
 
 const AttributeHeaders = () => {
   const header = [
@@ -22,7 +18,7 @@ const AttributeHeaders = () => {
   );
 };
 
-const GameBoard: React.FC = () => {
+const GameBoard = () => {
   const { guesses, MAX_ATTEMPTS, gameOver } = useGame();
 
   return (
@@ -35,11 +31,11 @@ const GameBoard: React.FC = () => {
           isCurrentGuess={false}
         />
       ))}
-      {!gameOver && [...Array(MAX_ATTEMPTS - guesses.length)].map((_, index) => (
+      {[...Array(MAX_ATTEMPTS - guesses.length)].map((_, index) => (
         <BoardRow 
           key={`empty-${index}`}
           guess={null}
-          isCurrentGuess={index === 0} // true for first empty row, false for the rest
+          isCurrentGuess={index === 0 && !gameOver} // true for first empty row, false for the rest
         />
       ))}
     </div>

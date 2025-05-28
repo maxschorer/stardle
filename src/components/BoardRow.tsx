@@ -1,8 +1,11 @@
+import { useState, useEffect } from 'react';
 import SearchRow from './SearchRow';
 
 import { formatNumber } from '../utils/gameUtils';
 import { Guess } from '../types/Guess';
 import { attributes } from '../types/Player';
+
+import '../styles/animations.css';
 
 interface GuessRowProps {
   guess: Guess | null;
@@ -17,7 +20,7 @@ interface Comparison {
   direction?: 'higher' | 'lower';
 }
 
-
+const EMPTY_CLASS = "aspect-square bg-gray-200"
 
 const getMatchClass = (attr: string, comparisons: Comparison[]) => {
     const comparison = comparisons.find(c => c.attribute === attr);
@@ -62,7 +65,7 @@ return (
     {[...Array(6)].map((_, i) => (
         <div 
         key={i} 
-        className="aspect-square bg-gray-200"
+        className={EMPTY_CLASS}
         />
     ))}
     </div>
@@ -83,15 +86,22 @@ const GuessRow = ({ guess } : { guess: Guess }) => {
         )}
       </div>
 
-      {/* Attributes */}
-      {attributes.map((attr) => (
+      {attributes.map((attr, ind) => (
         <div 
           key={attr.key} 
-          className={`aspect-square flex items-center justify-center text-white font-bold ${
-            getMatchClass(attr.key, guess?.comparison || [])
-          }`}
+          className={"flip-container"}
         >
-          {renderValue(attr, guess!)}
+          <div className={`flip-card delay-${ind+1}`}>
+            <div className={`${EMPTY_CLASS} flip-back`} />
+            <div 
+              className={`aspect-square flex items-center justify-center text-white font-bold 
+                flip-front
+                ${getMatchClass(attr.key, guess?.comparison || [])}
+              `}
+            >
+              {renderValue(attr, guess!)}
+            </div>
+          </div>
         </div>
       ))}
     </div>
@@ -106,7 +116,7 @@ const BoardRow = ({ guess, isCurrentGuess }: GuessRowProps) => {
   // Render empty row
   if (!isCurrentGuess) {
     return <EmptyRow />
-  }
+  }0-8
 
   return <SearchRow />
 };
