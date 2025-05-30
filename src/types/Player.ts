@@ -1,33 +1,29 @@
 export interface Player {
   id: string;
+  permalink: string;
   name: string;
   position: Position;
-  rookieYear: number;
   seasons: number;
-  allStarGames: number;
-  rings: number;
-  careerPoints: number;
-  imageUrl?: string;
+  team: string;
+  rating: number;
+  nationality: string;
 }
 
 export type Position = 'PG' | 'SG' | 'SF' | 'PF' | 'C';
 
-export const positionGroups = {
-  'PG': ['PG'],
-  'SG': ['SG'],
-  'SF': ['SF'],
-  'PF': ['PF'],
-  'C': ['C'],
-  'Guard': ['PG', 'SG'],
-  'Forward': ['SF', 'PF'],
-  'Big': ['PF', 'C']
+export const divisions = {
+  'atlantic': ['BOS', 'BKN', 'NYK', 'PHI', 'TOR'],
+  'central': ['CHI', 'CLE', 'DET', 'IND', 'MIL'],
+  'southeast': ['ATL', 'CHA', 'MIA', 'ORL', 'WAS'],
+  'northwest': ['DEN', 'MIN', 'OKC', 'POR', 'UTA'],
+  'pacific': ['GSW', 'LAC', 'LAL', 'PHX', 'SAC'],
+  'southwest': ['DAL', 'HOU', 'MEM', 'NOP', 'SAS']
 };
 
 export const attributes = [
-  { name: 'Position', key: 'position', shortName: 'P' },
-  { name: 'Rookie Year', key: 'rookieYear', shortName: 'RY' },
-  { name: 'Seasons', key: 'seasons', shortName: 'S' },
-  { name: 'All Stars', key: 'allStarGames', shortName: 'ASG' },
-  // { name: 'Rings', key: 'rings' },
-  { name: 'Points', key: 'careerPoints', shortName: 'TP' }
+  { name: 'Position', key: 'position'},
+  { name: 'Nationality', key: 'nationality'},
+  { name: 'Team', key: 'team'},
+  { name: 'Seasons', key: 'seasons'},
+  { name: 'Rating', key: 'rating'},
 ];

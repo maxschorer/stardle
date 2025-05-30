@@ -156,11 +156,11 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }).join('');
     }).join('\n');
     
-    const text = `Stardle ${new Date().toLocaleDateString()}\n${gameWon ? guesses.length : 'X'}/${MAX_ATTEMPTS}\n\n${emoji}`;
+    const text = `NBA-dle ${new Date().toLocaleDateString()}\n${gameWon ? guesses.length : 'X'}/${MAX_ATTEMPTS}\n\n${emoji}`;
     
     if (navigator.share) {
       navigator.share({
-        title: 'My Stardle Results',
+        title: 'My NBA-dle Results',
         text: text
       }).catch(console.error);
     } else {

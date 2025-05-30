@@ -109,8 +109,14 @@ const SearchRow = () => {
                 onClick={() => handleSelectPlayer(player)}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
               >
-                <span>{player.name}</span>
-                <span className="ml-2 text-sm text-gray-500">({player.position})</span>
+                <div className="flex items-center space-x-2">
+                  <img 
+                    src={`/images/players/${player.permalink}.png`}
+                    alt={player.name}
+                    className="w-8 h-8 rounded-full object-cover object-[center_top]"
+                  />
+                  <span>{player.name}</span>
+                </div>
               </div>
             ))}
           </div>

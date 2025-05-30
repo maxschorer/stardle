@@ -10,12 +10,11 @@ function mapDbPlayerToPlayer(dbPlayer: any): Player {
     id: dbPlayer.id,
     name: dbPlayer.name,
     position: dbPlayer.position as any,
-    rookieYear: dbPlayer.rookie_year,
     seasons: dbPlayer.seasons,
-    allStarGames: dbPlayer.num_all_stars,
-    rings: dbPlayer.num_rings,
-    careerPoints: dbPlayer.total_points,
-    imageUrl: dbPlayer.image_url
+    team: dbPlayer.team_code,
+    rating: dbPlayer.rating,
+    nationality: dbPlayer.nationality,
+    permalink: dbPlayer.permalink,
   };
 }
 
