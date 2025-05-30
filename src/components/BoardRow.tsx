@@ -102,6 +102,7 @@ const GuessRow = ({ guess } : { guess: Guess }) => {
 
       {attributes.map((attr, ind) => {
         const comparison = guess.comparison.find(c => c.attribute === attr.key);
+        if (!comparison) return;
         
         return (
           <div 

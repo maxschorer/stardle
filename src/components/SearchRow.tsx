@@ -4,18 +4,16 @@ import { Player } from '../types/Player';
 import { useGame } from '../contexts/GameContext';
 
 const SearchRow = () => {
-  const { loading, handleGuess, guesses } = useGame();
+  const { handleGuess, guesses } = useGame();
   const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<Player[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [_, setIsLoading] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const searchTimeout = setTimeout(async () => {
       if (query.trim()) {
-        setIsLoading(true);
         try {
           const searchResults = await searchPlayers(query);
           const filteredResults = searchResults.filter(
@@ -25,8 +23,6 @@ const SearchRow = () => {
           setIsOpen(filteredResults.length > 0);
         } catch (error) {
           console.error('Error searching players:', error);
-        } finally {
-          setIsLoading(false);
         }
       } else {
         setResults([]);
@@ -62,10 +58,6 @@ const SearchRow = () => {
     setIsOpen(false);
     inputRef.current?.focus();
   };
-
-  if (loading) {
-    return <div>Loading players...</div>;
-  }
 
   return (
     <div className="grid grid-cols-6 gap-1">
