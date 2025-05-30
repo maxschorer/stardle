@@ -157,17 +157,11 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }).join('\n');
     
     const text = `NBA-dle ${new Date().toLocaleDateString()}\n${gameWon ? guesses.length : 'X'}/${MAX_ATTEMPTS}\n\n${emoji}`;
+    console.log({text})
     
-    if (navigator.share) {
-      navigator.share({
-        title: 'My NBA-dle Results',
-        text: text
-      }).catch(console.error);
-    } else {
-      navigator.clipboard.writeText(text)
+    navigator.clipboard.writeText(text)
         .then(() => alert('Results copied to clipboard!'))
         .catch(console.error);
-    }
   };
 
   // Create the value object that will be provided to consumers
