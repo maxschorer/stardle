@@ -22,7 +22,7 @@ export const divisions = {
 
 export const attributes = [
   { name: 'Position', key: 'position'},
-  { name: 'Nationality', key: 'nationality'},
+  { name: 'Country', key: 'nationality'},
   { name: 'Team', key: 'team'},
   { name: 'Seasons', key: 'seasons'},
   { name: 'Rating', key: 'rating'},
