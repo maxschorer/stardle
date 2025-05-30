@@ -15,11 +15,6 @@ interface GuessRowProps {
 }
 
 const EMPTY_CLASS = "aspect-square bg-gray-200"
-const COLOR_MAP = {
-  'incorrect': "#787c7e",
-  'exact': "#6aaa64",
-  'close': "#c9b458",
-}
 
 
 const renderValue = (comparison: AttributeComparison | undefined) => {
@@ -68,7 +63,7 @@ const renderValue = (comparison: AttributeComparison | undefined) => {
           </div>
           
           {/* Right quarter with optional arrow */}
-          <div className="w-1/4 flex items-center justify-start">
+          <div className="w-1/4 flex items-center justify-start]-">
             {comparison.direction && (
               <span>
                 {comparison.direction === 'higher' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
@@ -107,7 +102,6 @@ const GuessRow = ({ guess } : { guess: Guess }) => {
 
       {attributes.map((attr, ind) => {
         const comparison = guess.comparison.find(c => c.attribute === attr.key);
-        const color = COLOR_MAP[comparison.match];
         
         return (
           <div 
@@ -127,7 +121,7 @@ const GuessRow = ({ guess } : { guess: Guess }) => {
                   text-base 
                   md:text-2xl
                   flip-front
-                  bg-[${color}]
+                  ${comparison.match}
                 `}
               >
                 {renderValue(comparison)}
