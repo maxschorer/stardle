@@ -1,6 +1,5 @@
 import GameHeader from './components/GameHeader';
 import GameBoard from './components/GameBoard';
-import PlayerSearch from './components/PlayerSearch';
 import HowToPlayModal from './components/HowToPlayModal';
 import GameOverModal from './components/GameOverModal';
 import { GameProvider } from './contexts/GameContext';

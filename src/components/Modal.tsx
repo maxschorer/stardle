@@ -1,14 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+const Modal  = ({ isOpen, onClose, title="", children }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   
   // Handle ESC key to close modal
@@ -51,11 +51,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
       <div className="flex min-h-full items-center justify-center p-4">
         <div 
           ref={modalRef}
-          className="bg-gray-900 rounded-lg max-w-lg w-full p-6 shadow-xl transform transition-all"
+          className="bg-white rounded-lg max-w-lg w-full p-6 shadow-xl transform transition-all"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{title}</h2>
+            <h2 className="text-2xl font-bold">{title}</h2>
             <button
               onClick={onClose}
               className="p-1 rounded-full hover:bg-gray-800 transition-colors"
