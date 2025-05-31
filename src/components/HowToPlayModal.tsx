@@ -1,5 +1,6 @@
 import { useGame } from '../contexts/GameContext';
 import Modal from './Modal';
+import { Link } from 'react-router-dom';
 
 const HowToPlayModal = () => {
   const { showHowToPlay, setShowHowToPlay } = useGame();
@@ -70,7 +71,10 @@ const HowToPlayModal = () => {
             
             <div>
               <p className="font-bold">How can I see players in the game?</p>
-              <p>Click the players icon or go to nba-dle.com/players. The list of all players and their attributes will be there.</p>
+              <p>
+                Click the list icon in the top right (next to the info icon) or <Link to="/players" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">click here</Link>.
+                The list of all players and their attributes will be there.
+              </p>
             </div>
           </div>
         </div>

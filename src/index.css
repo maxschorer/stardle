@@ -33,7 +33,7 @@ body {
 /* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--ball-orange) rgba(255, 255, 255, 0.1);
+  scrollbar-color: black rgba(255, 255, 255, 0.1);
 }
 
 /* For Chrome, Edge, and Safari */
@@ -47,6 +47,6 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--ball-orange);
+  background-color: black;
   border-radius: 4px;
 }
