@@ -156,8 +156,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }).join('');
     }).join('\n');
     
-    const text = `NBA-dle ${new Date().toLocaleDateString()}\n${gameWon ? guesses.length : 'X'}/${MAX_ATTEMPTS}\n\n${emoji}`;
-    console.log({text})
+    const text = `NBA-dle ${new Date().toLocaleDateString()}\n${gameWon ? guesses.length : 'X'}/${MAX_ATTEMPTS}\n\n${emoji}\n\Beat my score at https://www.nba-dle.com!`;
     
     navigator.clipboard.writeText(text)
         .then(() => alert('Results copied to clipboard!'))
