@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useGame } from '../contexts/GameContext';
 
 const GameOverModal = () => {
@@ -9,16 +9,32 @@ const GameOverModal = () => {
     targetPlayer, 
     shareResults 
   } = useGame();
+  
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  if (!showGameOver) return null;
   useEffect(() => {
-    // Play victory sound when modal opens with a win
-    if (gameWon) {
-      const audio = new Audio('/sounds/victory.mp3');
-      audio.play();
+    if (gameWon && !audioRef.current) {
+      audioRef.current = new Audio('/sounds/victory.mp3');
+      audioRef.current.play();
     }
 
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
   }, [gameWon]);
+
+  const handleClose = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    setShowGameOver(false);
+  };
+
+  if (!showGameOver) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -26,10 +42,10 @@ const GameOverModal = () => {
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-sm font-bold">
-              {gameWon ? "Congratulations! Today's player is" : "Game over.  Today's player is"}
+              {gameWon ? "Congratulations! Today's player is" : "Game over. Today's player is"}
             </h2>
             <button 
-              onClick={() => setShowGameOver(false)}
+              onClick={handleClose}
               className="text-gray-400 hover:text-white"
               aria-label="Close"
             >
@@ -90,7 +106,7 @@ const GameOverModal = () => {
                   
                   {/* Rating */}
                   <div className="flex flex-col items-center">
-                    <span className="text-xs font-semibold mb-1">2K Rating</span>
+                    <span className="text-xs font-semibold mb-1">Rating</span>
                     <span className="text-base">{targetPlayer?.rating}</span>
                   </div>
                 </div>

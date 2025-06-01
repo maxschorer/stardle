@@ -3,6 +3,10 @@ import { Player } from '../types/Player';
 
 // Cache for all eligible players
 let allPlayersCache: Player[] = [];
+interface DailyPlayerResponse {
+  player: Player;
+  number: number;
+}
 
 // Helper function to convert database player to Player type
 function mapDbPlayerToPlayer(dbPlayer: any): Player {
@@ -65,14 +69,14 @@ export async function getAllPlayers(): Promise<Player[]> {
 }
 
 // Function to get today's player
-export async function getRandomPlayer(): Promise<Player> {
-  const today = getPSTDate()
+export async function getTodayGuess(): Promise<DailyPlayerResponse> {
+  const today = getPSTDate();
   
   try {
     // Get today's player from daily_players
     const { data: dailyPlayer, error: dailyPlayerError } = await supabase
       .from('daily_players')
-      .select('player_id')
+      .select('player_id, number')
       .eq('ds', today)
       .single();
     
@@ -90,52 +94,37 @@ export async function getRandomPlayer(): Promise<Player> {
       await getAllPlayers(); // This will populate the cache
     }
 
-    // First check if we already have the players cached
-    if (allPlayersCache.length > 0) {
-      const cachedPlayer = allPlayersCache.find(p => p.id === dailyPlayer.player_id);
-      if (cachedPlayer) {
-        return cachedPlayer;
-      }
-    }
-    
-    // If not in cache, fetch from database
-    const { data: player, error: playerError } = await supabase
-      .from('players')
-      .select('*')
-      .eq('id', dailyPlayer.player_id)
-      .single();
-    
-    if (playerError) {
-      throw new Error(`Error fetching player details: ${playerError.message}`);
-    }
+    // Find the player in the cache
+    const player = allPlayersCache.find(p => p.id === dailyPlayer.player_id);
     
     if (!player) {
-      throw new Error(`Player with ID ${dailyPlayer.player_id} not found`);
+      throw new Error(`Player with ID ${dailyPlayer.player_id} not found in cache`);
     }
-    
-    return mapDbPlayerToPlayer(player);
+
+    return {
+      player,
+      number: dailyPlayer.number
+    };
   } catch (error) {
-    console.error('Failed to get today\'s player:', error);
+    console.error('Error in getTodayGuess:', error);
     throw error;
   }
 }
 
-// Function to search players by name
 export async function searchPlayers(query: string): Promise<Player[]> {
   if (!query.trim()) {
     return [];
   }
-  
-  // Ensure we have players in the cache
+
   if (allPlayersCache.length === 0) {
     await getAllPlayers(); // This will populate the cache if it's empty
   }
-  
+
   // Search in the cached players
   const normalizedQuery = query.trim().toLowerCase();
   const results = allPlayersCache
-    .filter(player => player.name.toLowerCase().includes(normalizedQuery))
-    .slice(0, 10); // Limit to 10 results
-    
+      .filter(player => player.name.toLowerCase().includes(normalizedQuery))
+      .slice(0, 10); // Limit to 10 results
+
   return results;
 }

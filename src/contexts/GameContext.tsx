@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Player } from '../types/Player';
 import { Guess } from '../types/Guess';
-import { getRandomPlayer, getAllPlayers } from '../data/players';
+import { getTodayGuess, getAllPlayers } from '../data/players';
 import { compareAttributes } from '../utils/gameUtils';
 
 // Define the shape of our context
@@ -20,13 +20,14 @@ interface GameContextType {
   handleGuess: (player: Player) => void;
   shareResults: () => void;
   MAX_ATTEMPTS: number;
+  gameNumber: number;
 }
 
 // Create the context with undefined as default value
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 // Provider component that wraps your app and makes game state available
-export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export function GameProvider({ children }: { children: ReactNode }) {
   const [targetPlayer, setTargetPlayer] = useState<Player | null>(null);
   const [guesses, setGuesses] = useState<Guess[]>([]);
   const [currentGuess, setCurrentGuess] = useState<Guess | null>(null);
@@ -36,6 +37,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [showGameOver, setShowGameOver] = useState<boolean>(false);
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [gameNumber, setGameNumber] = useState<number>(0);
   
   const MAX_ATTEMPTS = 8;
 
@@ -49,8 +51,9 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setAllPlayers(players);
         
         // Then load today's target player
-        const player = await getRandomPlayer();
+        const { player, number } = await getTodayGuess();
         setTargetPlayer(player);
+        setGameNumber(number);
         
         // Check if it's a new day to reset the game
         const savedDate = localStorage.getItem('stardleDate');
@@ -134,9 +137,9 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     
     // Check if the guess is correct
     if (player.id === targetPlayer?.id) {
-      setGameWon(true);
-      setGameOver(true);
-      setTimeout(() => {
+     setTimeout(() => {
+        setGameWon(true);
+        setGameOver(true);
         setShowGameOver(true);
       }, 3400); // 3 seconds delay
     } else if (updatedGuesses.length >= MAX_ATTEMPTS) {
@@ -156,7 +159,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }).join('');
     }).join('\n');
     
-    const text = `NBA-dle ${new Date().toLocaleDateString()}\n${gameWon ? guesses.length : 'X'}/${MAX_ATTEMPTS}\n\n${emoji}\n\Beat my score at https://www.nba-dle.com!`;
+    const text = `NBA-dle #${gameNumber}\n${gameWon ? guesses.length : 'X'}/${MAX_ATTEMPTS}\n\n${emoji}\n\nPlay at https://www.nba-dle.com!`;
     
     navigator.clipboard.writeText(text)
         .then(() => alert('Results copied to clipboard!'))
@@ -178,7 +181,8 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setShowGameOver,
     handleGuess,
     shareResults,
-    MAX_ATTEMPTS
+    MAX_ATTEMPTS,
+    gameNumber
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
