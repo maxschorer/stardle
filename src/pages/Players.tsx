@@ -36,7 +36,7 @@ export default function Players() {
                 <td className="p-4 w-[20%]">
                   <div className="flex items-center justify-center">
                     <img 
-                      src={`/images/countries/${player.nationality.toLowerCase().replace(' ', '-')}.svg`}
+                      src={`/images/countries/${player.nationality.toLowerCase().replace(/\s+/g, '-')}.svg`}
                       alt={player.nationality}
                       className="w-12 h-8 object-contain"
                     />
